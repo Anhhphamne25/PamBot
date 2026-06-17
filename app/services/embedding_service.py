@@ -13,7 +13,7 @@ def create_embedding(text: str) -> list[float]:
 
     last_error = None
 
-    for attempt in range(5):
+    for attempt in range(2):
         try:
             response = httpx.post(
                 settings.AI_API_EMBEDDINGS,
@@ -28,8 +28,7 @@ def create_embedding(text: str) -> list[float]:
 
             response.raise_for_status()
             data = response.json()
-
-            print("ok")
+            print(f"Embedding API response: {data}")
 
             return data["embeddings"][0]
 
@@ -37,7 +36,7 @@ def create_embedding(text: str) -> list[float]:
             last_error = e
 
             status_code = e.response.status_code
-            print(f"Embedding API error {status_code}, retry {attempt + 1}/5...")
+            print(f"Embedding API error {status_code}, retry {attempt + 1}/2...")
 
             if status_code == 504:
                 time.sleep(10)
@@ -46,7 +45,7 @@ def create_embedding(text: str) -> list[float]:
 
         except httpx.ReadTimeout as e:
             last_error = e
-            print(f"Embedding read timeout, retry {attempt + 1}/5...")
+            print(f"Embedding read timeout, retry {attempt + 1}/2...")
             time.sleep(10)
 
     raise RuntimeError(f"Embedding failed after retries: {last_error}")
