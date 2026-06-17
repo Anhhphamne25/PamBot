@@ -8,6 +8,7 @@ client = QdrantClient(
     api_key=settings.QDRANT_API_KEY,
 )
 
+
 def create_collection_if_not_exists():
     collections = client.get_collections().collections
     collection_names = [collection.name for collection in collections]
@@ -25,6 +26,7 @@ def create_collection_if_not_exists():
     else:
         print(f"Collection already exists: {settings.QDRANT_COLLECTION_NAME}")
 
+
 def upsert_chunks(points: list[PointStruct]):
     client.upsert(
         collection_name=settings.QDRANT_COLLECTION_NAME,
@@ -33,8 +35,11 @@ def upsert_chunks(points: list[PointStruct]):
 
 
 def search_similar(vector: list[float], limit: int = 5):
-    return client.search(
+    result = client.query_points(
         collection_name=settings.QDRANT_COLLECTION_NAME,
-        query_vector=vector,
+        query=vector,
         limit=limit,
+        with_payload=True,
     )
+
+    return result.points
