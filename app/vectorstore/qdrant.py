@@ -34,7 +34,7 @@ def upsert_chunks(points: list[PointStruct]):
     )
 
 
-def search_similar(vector: list[float], limit: int = 5):
+def search_similar(vector: list[float], limit: int = 6):
     result = client.query_points(
         collection_name=settings.QDRANT_COLLECTION_NAME,
         query=vector,
