@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Header, Depends
 
-from app.core.config import settings
+from app.config import settings
 from app.schemas.pambot_schema import PamBotRequest, PamBotResponse
 from app.services.rag_service import generate_answer
 
