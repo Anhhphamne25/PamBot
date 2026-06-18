@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     AI_API_ASK: str
     ASK_MODEL: str
 
+    APP_API_KEY: str
+
     class Config:
         env_file = ".env"
 
